@@ -51,6 +51,7 @@ Effect::Effect(const Plugin::CreateParams& params)
     REGISTER(SetEffectExpiredScript);
     REGISTER(GetEffectExpiredData);
     REGISTER(GetEffectExpiredCreator);
+    REGISTER(SetEffectParamInteger);
 
 #undef REGISTER
 
@@ -242,6 +243,22 @@ ArgumentStack Effect::GetEffectExpiredCreator(ArgumentStack&&)
     ArgumentStack stack;
 
     Services::Events::InsertArgument(stack, g_plugin->m_effectExpiredCreator);
+
+    return stack;
+}
+
+ArgumentStack Effect::SetEffectParamInteger(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    auto eff = Services::Events::ExtractArgument<API::CGameEffect*>(args);
+    int nParam = Services::Events::ExtractArgument<int32_t>(args);
+
+    ASSERT_OR_THROW(nParam <= eff->m_nNumIntegers);
+
+    for (int i = 0; i < nParam; i++)
+    {
+        eff->m_nParamInteger[i] = Services::Events::ExtractArgument<int32_t>(args);
+    }
 
     return stack;
 }

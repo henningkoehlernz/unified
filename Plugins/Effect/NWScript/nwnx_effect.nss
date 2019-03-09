@@ -65,6 +65,8 @@ string NWNX_Effect_GetEffectExpiredData();
 // THIS SHOULD ONLY BE CALLED FROM WITHIN A SCRIPT THAT WAS EXECUTED BY NWNX_Effect_SetEffectExpiredScript()
 object NWNX_Effect_GetEffectExpiredCreator();
 
+// Create Damage effect dealing one or more types of damage
+effect NWNX_Effect_EffectDamage(int iBludgeoning, int iPierce=-1, int iSlash=-1, int iMagical=-1, int iAcid=-1, int iCold=-1, int iDivine=-1, int iElectrical=-1, int iFire=-1, int iNegative=-1, int iPositive=-1, int iSonic=-1, int iBase=-1);
 
 const string NWNX_Effect = "NWNX_Effect";
 
@@ -203,4 +205,30 @@ object NWNX_Effect_GetEffectExpiredCreator()
     NWNX_CallFunction(NWNX_Effect, sFunc);
 
     return NWNX_GetReturnValueObject(NWNX_Effect, sFunc);
+}
+
+effect NWNX_Effect_EffectDamage(int iBludgeoning, int iPierce, int iSlash, int iMagical, int iAcid, int iCold, int iDivine,
+                                int iElectrical, int iFire, int iNegative, int iPositive, int iSonic, int iBase)
+{
+    string sFunc = "SetEffectParamInteger";
+    effect e = EffectDamage(0);
+
+    NWNX_PushArgumentInt(NWNX_Effect, sFunc, iBase);
+    NWNX_PushArgumentInt(NWNX_Effect, sFunc, iSonic);
+    NWNX_PushArgumentInt(NWNX_Effect, sFunc, iPositive);
+    NWNX_PushArgumentInt(NWNX_Effect, sFunc, iNegative);
+    NWNX_PushArgumentInt(NWNX_Effect, sFunc, iFire);
+    NWNX_PushArgumentInt(NWNX_Effect, sFunc, iElectrical);
+    NWNX_PushArgumentInt(NWNX_Effect, sFunc, iDivine);
+    NWNX_PushArgumentInt(NWNX_Effect, sFunc, iCold);
+    NWNX_PushArgumentInt(NWNX_Effect, sFunc, iAcid);
+    NWNX_PushArgumentInt(NWNX_Effect, sFunc, iMagical);
+    NWNX_PushArgumentInt(NWNX_Effect, sFunc, iSlash);
+    NWNX_PushArgumentInt(NWNX_Effect, sFunc, iPierce);
+    NWNX_PushArgumentInt(NWNX_Effect, sFunc, iBludgeoning);
+    NWNX_PushArgumentInt(NWNX_Effect, sFunc, 13); // number of parameters to set
+    NWNX_PushArgumentEffect(NWNX_Effect, sFunc, e);
+
+    NWNX_CallFunction(NWNX_Effect, sFunc);
+    return e;
 }
