@@ -9,6 +9,7 @@
 #include "Tweaks/PreserveDepletedItems.hpp"
 #include "Tweaks/HideDMsOnCharList.hpp"
 #include "Tweaks/DisableMonkAbilitiesWhenPolymorphed.hpp"
+#include "Tweaks/AllowPolymorphedCast.hpp"
 
 #include "Services/Config/Config.hpp"
 
@@ -126,6 +127,12 @@ Tweaks::Tweaks(const Plugin::CreateParams& params)
     {
         LOG_INFO("Monk abilities (ac, speed, attacks) will be disabled during polymorph");
         m_DisableMonkAbilitiesWhenPolymorphed = std::make_unique<DisableMonkAbilitiesWhenPolymorphed>(GetServices()->m_hooks.get());
+    }
+
+    if (GetServices()->m_config->Get<bool>("ALLOW_POLYMORPHED_CAST", false))
+    {
+        LOG_INFO("Spellcasting will be possible while polymorphed.");
+        m_AllowPolymorphedCast = std::make_unique<AllowPolymorphedCast>(GetServices()->m_hooks.get());
     }
 }
 
